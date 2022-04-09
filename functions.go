@@ -27,28 +27,28 @@ func Base64Decode(input string) (string, error) {
 	return string(decoded), nil
 }
 
-func ParsePassword(input string) (string, error) {
+func ParsePassword(input string) string {
 	str, err := Base64Decode(input)
 	if err != nil {
-		return "", fmt.Errorf("failed to parse password. caused by '%v'", err)
+		log.Fatalf("failed to parse password. caused by '%v'", err)
 	}
 	output := Reverse(str)
-	return output, nil
+	return output
 }
 
-func ValidatePath(path *string, flag string) (string, error) {
+func ValidatePath(path *string, flag string) string {
 	trimmed := strings.TrimSpace(*path)
 	if len(trimmed) == 0 {
 		log.Fatalf("flag '%s' is required", flag)
 	}
 	decoded, err := Base64Decode(trimmed)
 	if err != nil {
-		return "", fmt.Errorf("failed to validate path. error in decoding. error: '%v'", err)
+		log.Fatalf("failed to validate path. error in decoding. error: '%v'", err)
 	}
 	if _, err := os.Stat(decoded); os.IsNotExist(err) {
 		log.Fatalf("invalid '%s'. Path '%s' does not exist.", flag, decoded)
 	}
-	return decoded, nil
+	return decoded
 }
 
 func GenerateX25519Identity() KeyPair {
