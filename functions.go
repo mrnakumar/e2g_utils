@@ -1,4 +1,4 @@
-package pkg
+package e2g_utils
 
 import (
 	"encoding/base64"
