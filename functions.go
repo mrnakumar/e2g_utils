@@ -3,7 +3,6 @@ package e2g_utils
 import (
 	"encoding/base64"
 	"filippo.io/age"
-	"fmt"
 	"log"
 	"os"
 	"strings"
@@ -14,6 +13,13 @@ type KeyPair struct {
 	Private string
 }
 
+func Base64DecodeWithKill(input string) string {
+	decoded, err := Base64Decode(input)
+	if err != nil {
+		log.Fatalf("failed to decode '%s'. caused by '%v'", input, err)
+	}
+	return decoded
+}
 func Base64Encode(input string) string {
 	encoded := base64.StdEncoding.EncodeToString([]byte(input))
 	return encoded
