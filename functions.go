@@ -13,10 +13,10 @@ type KeyPair struct {
 	Private string
 }
 
-func Base64DecodeWithKill(input string) string {
+func Base64DecodeWithKill(input string, errorName string) string {
 	decoded, err := Base64Decode(input)
 	if err != nil {
-		log.Fatalf("failed to decode '%s'. caused by '%v'", input, err)
+		log.Fatalf("failed to decode '%s'. caused by '%v'", getFirstNonEmpty(errorName, input), err)
 	}
 	return decoded
 }
@@ -33,10 +33,10 @@ func Base64Decode(input string) (string, error) {
 	return string(decoded), nil
 }
 
-func ParsePassword(input string) string {
+func ParsePassword(input string, errorName string) string {
 	str, err := Base64Decode(input)
 	if err != nil {
-		log.Fatalf("failed to parse password. caused by '%v'", err)
+		log.Fatalf("failed to parse '%s'. caused by '%v'", getFirstNonEmpty(errorName, input), err)
 	}
 	output := Reverse(str)
 	return output
@@ -83,4 +83,11 @@ func Reverse(str string) string {
 	// Convert back to UTF-8.
 	output := string(runes)
 	return output
+}
+
+func getFirstNonEmpty(a string, b string) string {
+	if len(a) == 0 {
+		return b
+	}
+	return a
 }
