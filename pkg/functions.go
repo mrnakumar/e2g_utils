@@ -20,3 +20,21 @@ func GenerateX25519Identity() {
 	fmt.Printf("Public Key (bas64 encoded): '%s'\n", base64.StdEncoding.EncodeToString([]byte(keyPub)))
 	fmt.Println("------- Generated X25519Identity END --------")
 }
+
+func Reverse(str string) string {
+	// Get Unicode code points.
+	n := 0
+	runes := make([]rune, len(str))
+	for _, r := range str {
+		runes[n] = r
+		n++
+	}
+	runes = runes[0:n]
+	// Reverse
+	for i := 0; i < n/2; i++ {
+		runes[i], runes[n-1-i] = runes[n-1-i], runes[i]
+	}
+	// Convert back to UTF-8.
+	output := string(runes)
+	return output
+}
