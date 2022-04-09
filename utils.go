@@ -2,7 +2,7 @@ package main
 
 import (
 	"flag"
-	"mrnakumar.com/e2g-utils/pkg"
+	"github.com/mrnakumar/e2g-utils/pkg"
 )
 
 type utilFlags struct {

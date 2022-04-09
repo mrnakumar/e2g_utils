@@ -1,4 +1,4 @@
-module mrnakumar.com/e2g-utils
+module github.com/mrnakumar/e2g-utils
 
 go 1.17
 
