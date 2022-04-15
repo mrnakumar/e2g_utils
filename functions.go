@@ -1,8 +1,10 @@
 package e2g_utils
 
 import (
+	"bytes"
 	"encoding/base64"
 	"filippo.io/age"
+	"io/ioutil"
 	"log"
 	"os"
 	"strings"
@@ -11,6 +13,20 @@ import (
 type KeyPair struct {
 	Public  string
 	Private string
+}
+
+func Decrypt(filePath string, privateKey *age.X25519Identity) ([]byte, error) {
+	content, err := ioutil.ReadFile(filePath)
+	if err != nil {
+		return nil, err
+	}
+	decrypted, err := age.Decrypt(bytes.NewBuffer(content), privateKey)
+	if err != nil {
+		return nil, err
+	}
+	buf := new(bytes.Buffer)
+	_, err = buf.ReadFrom(decrypted)
+	return buf.Bytes(), err
 }
 
 func Base64DecodeWithKill(input string, errorName string) string {
