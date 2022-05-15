@@ -7,7 +7,10 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"path/filepath"
+	"sort"
 	"strings"
+	"time"
 )
 
 type KeyPair struct {
@@ -106,4 +109,38 @@ func getFirstNonEmpty(a string, b string) string {
 		return b
 	}
 	return a
+}
+
+// list files
+
+type fileInfo struct {
+	path    string
+	size    int64
+	modTime time.Time
+}
+
+func ListFiles(suffixes []string, basePath string) ([]fileInfo, error) {
+	infos, err := ioutil.ReadDir(basePath)
+	if err != nil {
+		return nil, err
+	}
+	var files []fileInfo
+	sort.Slice(infos, func(i, j int) bool {
+		return infos[i].ModTime().Before(infos[j].ModTime())
+	})
+	for _, info := range infos {
+		if info.Size() > 0 && matchSuffix(suffixes, info.Name()) {
+			files = append(files, fileInfo{path: filepath.Join(basePath, info.Name()), size: info.Size(), modTime: info.ModTime()})
+		}
+	}
+	return files, nil
+}
+
+func matchSuffix(suffixes []string, fileName string) bool {
+	for _, suffix := range suffixes {
+		if strings.HasSuffix(fileName, suffix) {
+			return true
+		}
+	}
+	return false
 }
