@@ -113,24 +113,24 @@ func getFirstNonEmpty(a string, b string) string {
 
 // list files
 
-type fileInfo struct {
+type FileInfo struct {
 	path    string
 	size    int64
 	modTime time.Time
 }
 
-func ListFiles(suffixes []string, basePath string) ([]fileInfo, error) {
+func ListFiles(suffixes []string, basePath string) ([]FileInfo, error) {
 	infos, err := ioutil.ReadDir(basePath)
 	if err != nil {
 		return nil, err
 	}
-	var files []fileInfo
+	var files []FileInfo
 	sort.Slice(infos, func(i, j int) bool {
 		return infos[i].ModTime().Before(infos[j].ModTime())
 	})
 	for _, info := range infos {
 		if info.Size() > 0 && matchSuffix(suffixes, info.Name()) {
-			files = append(files, fileInfo{path: filepath.Join(basePath, info.Name()), size: info.Size(), modTime: info.ModTime()})
+			files = append(files, FileInfo{path: filepath.Join(basePath, info.Name()), size: info.Size(), modTime: info.ModTime()})
 		}
 	}
 	return files, nil
