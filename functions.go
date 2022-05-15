@@ -68,7 +68,7 @@ func ValidatePath(path *string, flag string) string {
 	}
 	decoded, err := Base64Decode(trimmed)
 	if err != nil {
-		log.Fatalf("failed to validate path. error in decoding. error: '%v'", err)
+		log.Fatalf("failed to validate Path. error in decoding. error: '%v'", err)
 	}
 	if _, err := os.Stat(decoded); os.IsNotExist(err) {
 		log.Fatalf("invalid '%s'. Path '%s' does not exist.", flag, decoded)
@@ -114,9 +114,9 @@ func getFirstNonEmpty(a string, b string) string {
 // list files
 
 type FileInfo struct {
-	path    string
-	size    int64
-	modTime time.Time
+	Path    string
+	Size    int64
+	ModTime time.Time
 }
 
 func ListFiles(suffixes []string, basePath string) ([]FileInfo, error) {
@@ -130,7 +130,7 @@ func ListFiles(suffixes []string, basePath string) ([]FileInfo, error) {
 	})
 	for _, info := range infos {
 		if info.Size() > 0 && matchSuffix(suffixes, info.Name()) {
-			files = append(files, FileInfo{path: filepath.Join(basePath, info.Name()), size: info.Size(), modTime: info.ModTime()})
+			files = append(files, FileInfo{Path: filepath.Join(basePath, info.Name()), Size: info.Size(), ModTime: info.ModTime()})
 		}
 	}
 	return files, nil
