@@ -1,4 +1,4 @@
-package Files
+package e2g_utils
 
 import (
 	"bytes"
@@ -47,15 +47,6 @@ func ListFiles(suffixes []string, basePath string) ([]fileInfo, error) {
 		}
 	}
 	return files, nil
-}
-
-func matchSuffix(suffixes []string, fileName string) bool {
-	for _, suffix := range suffixes {
-		if strings.HasSuffix(fileName, suffix) {
-			return true
-		}
-	}
-	return false
 }
 
 type fileInfo struct {

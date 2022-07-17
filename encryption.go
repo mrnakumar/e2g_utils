@@ -1,10 +1,9 @@
-package Encryption
+package e2g_utils
 
 import (
 	"bytes"
 	"filippo.io/age"
 	"fmt"
-	"github.com/mrnakumar/e2g_utils"
 	"io"
 	"io/ioutil"
 	"log"
@@ -22,7 +21,7 @@ func CreateDecoder(privateKeyFilePath string) (Decoder, error) {
 	}
 
 	trimmed := strings.TrimSuffix(string(privateKey), "\n")
-	decoded, err := e2g_utils.Base64Decode(trimmed)
+	decoded, err := Base64Decode(trimmed)
 	if err != nil {
 		return Decoder{}, err
 	}
@@ -51,7 +50,7 @@ func CreateEncryptor(recipientKeyPath string) (Encryptor, error) {
 		return Encryptor{}, fmt.Errorf("failed to read file '%s'. Caused by : '%v'", recipientKeyPath, err)
 	}
 	trimmed := strings.TrimSuffix(string(recipientKey), "\n")
-	decoded, err := e2g_utils.Base64Decode(trimmed)
+	decoded, err := Base64Decode(trimmed)
 	if err != nil {
 		return Encryptor{}, fmt.Errorf("failed to decode recepient key path. Caused by: '%v'", err)
 	}
