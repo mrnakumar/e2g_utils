@@ -8,7 +8,6 @@ import (
 	"log"
 	"os"
 	"strings"
-	"time"
 )
 
 type KeyPair struct {
@@ -107,12 +106,4 @@ func getFirstNonEmpty(a string, b string) string {
 		return b
 	}
 	return a
-}
-
-// list files
-
-type FileInfo struct {
-	Path    string
-	Size    int64
-	ModTime time.Time
 }

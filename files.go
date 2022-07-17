@@ -32,25 +32,25 @@ func Size(folderPath string) (uint64, error) {
 	return 0, fmt.Errorf("failed to check size for path '%s'. unexpected output '%s'", folderPath, output)
 }
 
-func ListFiles(suffixes []string, basePath string) ([]fileInfo, error) {
+func ListFiles(suffixes []string, basePath string) ([]FileInfo, error) {
 	infos, err := ioutil.ReadDir(basePath)
 	if err != nil {
 		return nil, err
 	}
-	var files []fileInfo
+	var files []FileInfo
 	sort.Slice(infos, func(i, j int) bool {
 		return infos[i].ModTime().Before(infos[j].ModTime())
 	})
 	for _, info := range infos {
 		if info.Size() > 0 && matchSuffix(suffixes, info.Name()) {
-			files = append(files, fileInfo{path: filepath.Join(basePath, info.Name()), size: info.Size(), modTime: info.ModTime()})
+			files = append(files, FileInfo{Path: filepath.Join(basePath, info.Name()), Size: info.Size(), ModTime: info.ModTime()})
 		}
 	}
 	return files, nil
 }
 
-type fileInfo struct {
-	path    string
-	size    int64
-	modTime time.Time
+type FileInfo struct {
+	Path    string
+	Size    int64
+	ModTime time.Time
 }
